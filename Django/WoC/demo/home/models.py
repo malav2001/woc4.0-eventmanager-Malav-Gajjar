@@ -33,15 +33,15 @@ class Part(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        account_sid = 'AC3e69d9334e9e2f47bbc48bd877af0ff7'
-        auth_token = '47688951daf85278de8b7aac9ed14c04'
+        account_sid = os.environ['TWILIO_ACCOUNT_SID']
+        auth_token = os.environ['TWILIO_AUTH_TOKEN']
         client = Client(account_sid, auth_token)
 
-        message = client.messages \
-                        .create(
-                            body="Hello There, You have successfully registered in the event.",
-                            from_='+17655713757',
-                            to='+919913715425'
-                        )
-        # print(args)
+        message = client.messages.create(
+            body='Hello There, You have successfully registered in the Event.',
+            from_=os.environ['MY_NUM1'],
+            to=os.environ['MY_NUM2'],#num
+            # to='+91'+args[0],#num
+        )
+        
         return super().save(*args, **kwargs)
