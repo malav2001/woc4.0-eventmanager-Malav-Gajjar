@@ -58,24 +58,76 @@
         </form>
     </div>
 
-    <div class="container" id="host">
-        <div class="title">Event Hosted By User</div>
-        {% for event in event_list %}
-        <div style="margin-bottom: 15px;">
-            <br>
-            <p> <b>Host Email: </b>{{event.host_email}}</p>
-            <p> <b>Event I'd: </b>{{event.eventname}}</p>
-            <p> <b>Description: </b> {{event.dec}} </p>
-            <p> <b>Location: </b> {{event.location}} </p>
-            <p> <b>Start Date: </b> {{event.startDate}} </p>
-            <p> <b>End Date: </b> {{event.endDate}} </p>
-            <p> <b>Registration Deadline: </b>{{event.deadDate}} </p>
-            <p> <b>Number of Participants : </b> {{event.nop}}</p>
-            <br>
-            <hr>            
+    {% if allowed == "yes" %}
+        <div class="container" id="host">
+            <div class="title">Event Hosted By User</div>
+            {% for event in event_list %}
+            <div style="margin-bottom: 15px;">
+                <br>
+                <p> <b>Host Email: </b>{{event.host_email}}</p>
+                <p> <b>Event I'd: </b>{{event.eventname}}</p>
+                <p> <b>Description: </b> {{event.dec}} </p>
+                <p> <b>Location: </b> {{event.location}} </p>
+                <p> <b>Start Date: </b> {{event.startDate}} </p>
+                <p> <b>End Date: </b> {{event.endDate}} </p>
+                <p> <b>Registration Deadline: </b>{{event.deadDate}} </p>
+                <p> <b>Number of Participants : </b> {{event.nop}}</p>
+                <br>
+                <hr>            
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+
+        <div class="container">
+            <details>
+                <summary><span style="font-size:20px;">Show Participants List :</span></summary>
+                <form action="/ParticipantList" method="post">
+                    {% csrf_token %}
+                    <div class="user-details">
+        
+                        <div class="input-box">
+                            <span class="details">Event I'd</span>
+                            <input type="text" name="user_event" id="user_event" placeholder="Enter event name" required>
+                        </div>
+    
+                        <div class="button1">
+                            <input type="submit" value="Enter">
+                        </div>
+        
+                    </div>
+        
+                </form>
+            </details>
+
+            {% if allowed == "yes" %}
+            {% if messages %}
+            <ul class="messages">
+                <li>{{ messages }}</li>
+            </ul>
+            {% endif %}
+        {% endif %}
+
+        {% if allowed == "no" %}
+            <div class="title">List of Users</div>
+            {% for part in part_list %}
+            <div style="margin-bottom: 15px;">
+                <br>
+                <p> <b>Participant Name: </b>{{part.name}}</p>
+                <p> <b>Contact Number </b>{{part.contactnumber}}</p>
+                <p> <b>Participant Email </b> {{part.part_email}} </p>
+                <p> <b>Number of People </b> {{part.number}} </p>
+                <!-- <p> <b>Start Date: </b> {{event.startDate}} </p>
+                <p> <b>End Date: </b> {{event.endDate}} </p>
+                <p> <b>Registration Deadline: </b>{{event.deadDate}} </p>
+                <p> <b>Number of Participants : </b> {{event.nop}}</p>
+                <p> <b>Participant List : </b> <a href="#">view</a> </p> -->
+                <br>
+                <hr>            
+            </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    {% endif %}
 
 </body>
 <style>
@@ -202,7 +254,7 @@
 
     body{
         display: block;
-        height: 200vh;
+        /* height: 300vh; */
         justify-content: center;
         align-items: center;
         background: linear-gradient(135deg, #FFFFE0, #B22222);
@@ -313,10 +365,47 @@
         display: none;
     } */
 
+    /* .button1{
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 130px;
+        color: #fff;
+        background: #fe5b3d;
+        font-weight: 1000;
+        font-size: 18px;
+        border-radius: 5px;
+        letter-spacing: 2px;
+        border: none;
+    }
+
+    .button1 .sign-up{
+        background: #474fa0;
+        color: #fff;
+        border-radius: 0.5rem;
+    }
+
+    .button .sign-up::after{
+        content: '';
+        width: 0;
+        height: 3px;
+        background: var(--gradient);
+        position: relative;
+        bottom: -4px;
+        left: 0;
+        transition: 0.5s;
+    }
+
+    .button1:hover{
+        opacity: 0.7;
+        cursor: pointer;
+    } */
+
     form btn-1{
         align-items: center;
         justify-content: center;
     }
+    
 
     form .btn-1 input{
         height: 50px;
@@ -332,6 +421,26 @@
     }
 
     form .btn-1 input:hover{
+        opacity: 0.7;
+        cursor: pointer;
+    }
+
+    form .button1 input{
+        margin-top: 30px;
+        margin-right: 10px;
+        height: 50px;
+        width: 230px;
+        color: #fff;
+        background: #fe5b3d;
+        font-weight: 1000;
+        font-size: 18px;
+        border-radius: 5px;
+        letter-spacing: 2px;
+        /* background: linear-gradient(135deg, #FFFFE0, #B22222); */
+        border: none;
+    }
+
+    form .button1 input:hover{
         opacity: 0.7;
         cursor: pointer;
     }
