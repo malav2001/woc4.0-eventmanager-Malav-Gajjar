@@ -29,53 +29,36 @@
 </header>
 
 <body>
-    <!-- <div class="container" >
-        <div class="title" id="reg">Registration</div>
-        {% if messages %}
+
+    <div class="container" id="host">
+
+        <!-- {% if allowed == "yes" %} -->
+            {% if messages %}
             <ul class="messages">
                 <li>{{ messages }}</li>
             </ul>
+            {% endif %}
+        <!-- {% endif %} -->
+
+        {% if allowed == "no" %}
+            <div class="title">List of Users</div>
+            {% for part in part_list %}
+            <div style="margin-bottom: 15px;">
+                <br>
+                <p> <b>Participant Name: </b>{{part.name}}</p>
+                <p> <b>Contact Number </b>{{part.contactnumber}}</p>
+                <p> <b>Participant Email </b> {{part.part_email}} </p>
+                <p> <b>Number of People </b> {{part.number}} </p>
+                <!-- <p> <b>Start Date: </b> {{event.startDate}} </p>
+                <p> <b>End Date: </b> {{event.endDate}} </p>
+                <p> <b>Registration Deadline: </b>{{event.deadDate}} </p>
+                <p> <b>Number of Participants : </b> {{event.nop}}</p>
+                <p> <b>Participant List : </b> <a href="#">view</a> </p> -->
+                <br>
+                <hr>            
+            </div>
+            {% endfor %}
         {% endif %}
-        <form action="/SignUp" method="post">
-            {% csrf_token %}
-            <div class="user-details">
-
-                <div class="input-box">
-                    <span class="details">Email</span>
-                    <input type="email" name="user_email" id="user_email" placeholder="Enter your email" required>
-                </div>
-
-                <div class="input-box">
-                    <span class="details">Password</span>
-                    <input type="password" name="user_password" id="user_password" placeholder="Enter your password" required>
-                </div>
-            </div>
-
-            <div class="btn-1">
-                <input type="submit" value="Enter">
-            </div>
-
-        </form>
-    </div> -->
-
-    <div class="container" id="host">
-        <div class="title">List of Users</div>
-        {% for part in part_list %}
-        <div style="margin-bottom: 15px;">
-            <br>
-            <p> <b>Participant Name: </b>{{part.name}}</p>
-            <p> <b>Contact Number </b>{{part.contactnumber}}</p>
-            <p> <b>Participant Email </b> {{part.part_email}} </p>
-            <p> <b>Number of People </b> {{part.number}} </p>
-            <!-- <p> <b>Start Date: </b> {{event.startDate}} </p>
-            <p> <b>End Date: </b> {{event.endDate}} </p>
-            <p> <b>Registration Deadline: </b>{{event.deadDate}} </p>
-            <p> <b>Number of Participants : </b> {{event.nop}}</p>
-            <p> <b>Participant List : </b> <a href="#">view</a> </p> -->
-            <br>
-            <hr>            
-        </div>
-        {% endfor %}
     </div>
 
 </body>
