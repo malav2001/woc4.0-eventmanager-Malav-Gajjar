@@ -110,46 +110,41 @@ def EventDetails(request):
     # return render(request, 'Event Details.html')
 
 def SignUp(request):
-    if request.method == "POST":
+    if request.method == "POST": 
         user_email = request.POST.get('user_email')
         user_password = request.POST.get('user_password')
-        my_map = {}
 
-        if  Event.objects.all().filter(host_email=user_email).exists() :#and Event.objects.get(host_email=user_email).password == user_password:
-            # print(user_email)
-            event_list = Event.objects.all().filter(host_email=user_email)
-
-            for i in event_list:
-                # temp = []
-                temp = Part.objects.all().filter(eventName=i.eventname)
-                my_map[i.eventname] = temp
-                # print(my_map[i.eventname].values())
-                # temp.clear()
-            
-            # print(my_map.type())
-
-            # for key in my_map:
-                # for k in key.values():
-                #     print(key+" : "+k)
-                # print(key, ' ', my_map[key].values())
-                # print(key.type())
-            # if  Event.objects.all().filter(id=event_id).exists() and Event.objects.get(id=event_id).password == password:
-            #     context = {'participant_list': Participant.objects.all().filter(event_name=event_id)}
-            #     return render(request, 'event_dashboard.html',context) 
-            
-            # print(event_list[0].eventname)
-
-
-
-            return render(request, 'SignUp.html', {'event_list':event_list})
-
+        # if request.POST.get('person') == 'Host':
+        if Event.objects.all().filter(host_email=user_email).exists() :#and Event.objects.get(host_email=user_email).password == user_password:
+            context = {'event_list': Event.objects.all().filter(host_email=user_email),'allowed':'yes'}
+            # print(context)
+            # context1 = {}
+            print(context)
+            return render(request,'SignUp.html',context)  
         else:
             context = {'messages':"Username or password is incorrect !"}
             return render(request, 'SignUp.html', context)
-    return render(request, 'SignUp.html')
+        # else:
+        #     if  Participant_Registration.objects.all().filter(email=hostid).exists() and Participant_Registration.objects.get(email=hostid).password == password:
+        #         context = {'part_list': Participant_Registration.objects.all().filter(email=hostid)}
+        #         return render(request, 'loginpage.html',context) 
+        #     else:
+        #         context = {'messages':"Username or password is incorrect !"}
+        #         return render(request, 'loginpage.html', context)
+
+        return render(request,"SignUp.html")
+    else:
+        return render(request,"SignUp.html",{'allowed':'no'})
 
 def ParticipantList(request):
-    g = request.POST.get('search', '')
-    print(g)
-    part_list = Part.objects.all().filter(eventName=g)
-    return render(request, 'Participant List.html', {'part_list':part_list})
+    if request.method == "POST": 
+        user_event = request.POST.get('user_event')
+
+        if Event.objects.all().filter(eventname=user_event).exists():
+            part_list = Part.objects.all().filter(eventName=user_event)
+            context = {'part_list':part_list, 'allowed':'no'}
+            return render(request, 'Participant List.html', context)
+        
+        else:
+            context = {'message' : "Wrong Event Id Evtered !! Go back and ReEnter Event Id"}
+            return render(request, 'Participant List.html', context)
